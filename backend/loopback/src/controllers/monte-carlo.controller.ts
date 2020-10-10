@@ -18,6 +18,6 @@ export class MonteCarloController {
   monteCarloDistribution(
     @param.path.number('numberOfPoints') numberOfPoints: number
   ): Distribution {
-    return this.monteCarloService.generateDistribution(numberOfPoints);
+    return this.monteCarloService.generateWholeDistribution(numberOfPoints);
   }
 }

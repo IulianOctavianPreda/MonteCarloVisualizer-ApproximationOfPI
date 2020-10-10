@@ -16,7 +16,7 @@ describe('MonteCarloService', () => {
 
   it('generateDistribution()', () => {
     const numberOfPoints = 1000;
-    const distribution = monteCarloService.generateDistribution(numberOfPoints);
+    const distribution = monteCarloService.generateWholeDistribution(numberOfPoints);
     assert(!!distribution);
     assert(Array.isArray(distribution.points));
     assert(distribution.points.length === numberOfPoints);
