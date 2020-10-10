@@ -1,27 +1,26 @@
 {
-  "name": "montecarlovisualizer-approximationofpi",
-  "version": "1.0.0",
-  "description": "Monte Carlo method of approximating PI",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/IulianOctavianPreda/MonteCarloVisualizer-ApproximationOfPI.git"
-  },
-  "keywords": [
-    "Monte",
-    "Carlo",
-    "PI",
-    "Approximation",
-    "Visualization",
-    "Typescript"
-  ],
-  "author": "Iulian Preda",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/IulianOctavianPreda/MonteCarloVisualizer-ApproximationOfPI/issues"
-  },
-  "homepage": "https://github.com/IulianOctavianPreda/MonteCarloVisualizer-ApproximationOfPI#readme"
+    "name": "montecarlovisualizer-approximationofpi",
+    "version": "1.0.0",
+    "description": "Monte Carlo method of approximating PI",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/IulianOctavianPreda/MonteCarloVisualizer-ApproximationOfPI.git"
+    },
+    "keywords": [
+        "Monte",
+        "Carlo",
+        "PI",
+        "Approximation",
+        "Visualization",
+        "Typescript"
+    ],
+    "author": "Iulian Preda",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/IulianOctavianPreda/MonteCarloVisualizer-ApproximationOfPI/issues"
+    },
+    "homepage": "https://github.com/IulianOctavianPreda/MonteCarloVisualizer-ApproximationOfPI#readme"
 }
