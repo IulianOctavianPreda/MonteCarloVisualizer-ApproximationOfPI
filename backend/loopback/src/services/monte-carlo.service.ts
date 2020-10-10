@@ -9,7 +9,7 @@ import { Helper } from "./../shared/helper-methods";
   tags: {[CoreTags.SERVICE_INTERFACE]: MonteCarloService}
 })
 export class MonteCarloService {
-  public generatePositiveDistribution(numberOfPoints: number): Distribution {
+  public generateNaturalDistribution(numberOfPoints: number): Distribution {
     return this.generateDistribution(numberOfPoints, 0, numberOfPoints);
   }
 

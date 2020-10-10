@@ -10,7 +10,7 @@ import { Helper } from "./../shared/helper-methods";
   tags: {[CoreTags.SERVICE_INTERFACE]: MonteCarloMultiThreadedService}
 })
 export class MonteCarloMultiThreadedService {
-  public async generatePositiveDistribution(numberOfPoints: number): Promise<Distribution> {
+  public async generateNaturalDistribution(numberOfPoints: number): Promise<Distribution> {
     return this.generateDistributionMultiThreaded(numberOfPoints, 0, numberOfPoints);
   }
 

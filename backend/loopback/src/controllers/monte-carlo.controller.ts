@@ -7,11 +7,11 @@ import { MonteCarloService } from "./../services/monte-carlo.service";
 export class MonteCarloController {
   constructor(@service(MonteCarloService) private monteCarloService: MonteCarloService) {}
 
-  @get('/positive/{numberOfPoints}')
-  positiveMonteCarloDistribution(
+  @get('/natural/{numberOfPoints}')
+  naturalMonteCarloDistribution(
     @param.path.number('numberOfPoints') numberOfPoints: number
   ): Distribution {
-    return this.monteCarloService.generatePositiveDistribution(numberOfPoints);
+    return this.monteCarloService.generateNaturalDistribution(numberOfPoints);
   }
 
   @get('/whole/{numberOfPoints}')
