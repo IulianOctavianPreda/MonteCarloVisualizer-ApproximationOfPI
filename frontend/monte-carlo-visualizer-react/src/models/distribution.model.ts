@@ -4,9 +4,16 @@ import { Point } from './point.model';
 
 export interface Distribution {
     points: Point[];
-    elapsedTime: number;
 
-    approximatedPi: Decimal;
+    pi: Decimal;
 
-    elapsedTimeApproximatingPi: number;
+    metadata: DistributionMetadata;
+}
+
+export interface DistributionMetadata {
+    generateTime: number;
+    approximationTime: number;
+    responseTime: number;
+    responseSize: number;
+    waitTime: number;
 }

@@ -26,6 +26,6 @@ export class MonteCarloService {
         y: Helper.randomNumberInRange(max, min)
       });
     }
-    return {elapsedTime: Helper.getElapsedTime(startTime), points: arr};
+    return {metadata: {generateTime: Helper.getElapsedTime(startTime)}, points: arr};
   }
 }

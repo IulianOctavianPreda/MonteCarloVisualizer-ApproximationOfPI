@@ -36,7 +36,7 @@ export class MonteCarloMultiThreadedService {
     }
 
     return {
-      elapsedTime: Helper.getElapsedTime(startTime),
+      metadata: {generateTime: Helper.getElapsedTime(startTime)},
       points: (await Promise.all(promises)).flatMap((x) => x)
     };
   }
