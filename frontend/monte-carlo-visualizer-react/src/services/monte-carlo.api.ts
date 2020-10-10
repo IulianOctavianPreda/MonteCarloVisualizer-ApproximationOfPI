@@ -15,4 +15,12 @@ export class MonteCarloApi {
     public static getWholeDistribution(numberOfPoints: number): Promise<Distribution> {
         return axios.get(`/whole/${numberOfPoints}`, this.config);
     }
+
+    public static getMultiThreadedNaturalDistribution(numberOfPoints: number): Promise<Distribution> {
+        return axios.get(`/performance/natural/${numberOfPoints}`, this.config);
+    }
+
+    public static getMultiThreadedWholeDistribution(numberOfPoints: number): Promise<Distribution> {
+        return axios.get(`/performance/whole/${numberOfPoints}`, this.config);
+    }
 }
