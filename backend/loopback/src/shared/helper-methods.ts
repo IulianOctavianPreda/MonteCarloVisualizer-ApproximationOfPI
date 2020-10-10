@@ -10,4 +10,8 @@ export class Helper {
   public static getElapsedTime(startTime: number) {
     return performance.now() - startTime;
   }
+
+  public static getTime() {
+    return performance.now();
+  }
 }

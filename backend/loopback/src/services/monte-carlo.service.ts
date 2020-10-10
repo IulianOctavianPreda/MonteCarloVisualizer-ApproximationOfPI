@@ -1,5 +1,4 @@
 import { BindingScope, CoreTags, injectable } from "@loopback/core";
-import { performance } from "perf_hooks";
 
 import { Distribution } from "../models/distribution.model";
 import { Point } from "../models/point.model";
@@ -19,7 +18,7 @@ export class MonteCarloService {
   }
 
   private generateDistribution(numberOfPoints: number, min: number, max: number): Distribution {
-    const startTime = performance.now();
+    const startTime = Helper.getTime();
     const arr: Point[] = [];
     for (let i = 0; i < numberOfPoints; i++) {
       arr.push({
@@ -27,6 +26,6 @@ export class MonteCarloService {
         y: Helper.randomNumberInRange(max, min)
       });
     }
-    return {points: arr, elapsedTime: Helper.getElapsedTime(startTime)};
+    return {elapsedTime: Helper.getElapsedTime(startTime), points: arr};
   }
 }

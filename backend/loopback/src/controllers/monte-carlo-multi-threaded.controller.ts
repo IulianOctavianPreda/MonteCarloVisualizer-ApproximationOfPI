@@ -13,10 +13,13 @@ export class MonteCarloMultiThreadedController {
   async monteCarloMultiThreadedDistribution(
     @param.path.number('numberOfPoints') numberOfPoints: number
   ) {
-    return this.monteCarloMultiThreadedService.generateDistributionMultiThreaded(
-      numberOfPoints,
-      numberOfPoints,
-      numberOfPoints
-    );
+    return this.monteCarloMultiThreadedService.generateWholeDistribution(numberOfPoints);
+  }
+
+  @get('/performance/positive/{numberOfPoints}')
+  async monteCarloMultiThreadedPositiveDistribution(
+    @param.path.number('numberOfPoints') numberOfPoints: number
+  ) {
+    return this.monteCarloMultiThreadedService.generatePositiveDistribution(numberOfPoints);
   }
 }

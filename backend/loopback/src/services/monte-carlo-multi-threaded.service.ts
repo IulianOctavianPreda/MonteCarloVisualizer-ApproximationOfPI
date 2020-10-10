@@ -1,7 +1,8 @@
 import { BindingScope, CoreTags, injectable } from "@loopback/core";
+import workerize from "node-inline-worker";
 
+import { Distribution } from "../models/distribution.model";
 import { Point } from "../models/point.model";
-import { InlineWorker } from "../shared/inline-web-worker";
 import { Helper } from "./../shared/helper-methods";
 
 @injectable({
@@ -9,61 +10,58 @@ import { Helper } from "./../shared/helper-methods";
   tags: {[CoreTags.SERVICE_INTERFACE]: MonteCarloMultiThreadedService}
 })
 export class MonteCarloMultiThreadedService {
-  public async generatePositiveDistribution(numberOfPoints: number) {
+  public async generatePositiveDistribution(numberOfPoints: number): Promise<Distribution> {
     return this.generateDistributionMultiThreaded(numberOfPoints, 0, numberOfPoints);
   }
 
-  public async generateWholeDistribution(numberOfPoints: number) {
+  public async generateWholeDistribution(numberOfPoints: number): Promise<Distribution> {
     return this.generateDistributionMultiThreaded(numberOfPoints, -numberOfPoints, numberOfPoints);
   }
 
-  public async generateDistributionMultiThreaded(numberOfPoints: number, min: number, max: number) {
-    // const startTime = performance.now();
-
-    const helper = Helper;
-    const promises: Promise<MessageEvent<Point[]>>[] = [];
-    let ratio = numberOfPoints / 100;
+  public async generateDistributionMultiThreaded(
+    numberOfPoints: number,
+    min: number,
+    max: number
+  ): Promise<Distribution> {
+    const startTime = Helper.getTime();
+    const promises: Promise<Point[]>[] = [];
+    const divider = 10000;
+    let ratio = numberOfPoints / divider;
     if (!Number.isInteger(ratio)) {
       ratio = Math.floor(ratio);
-      promises.push(
-        this.generateDistributionWorker().run({
-          numberOfPoints: numberOfPoints - ratio * 100,
-          min,
-          max,
-          helper
-        })
-      );
+      promises.push(this.generateDistributionWorker(numberOfPoints - ratio * divider, min, max));
     }
     for (let i = 0; i < ratio; i++) {
-      promises.push(
-        this.generateDistributionWorker().run({
-          numberOfPoints: ratio,
-          min,
-          max,
-          helper
-        })
-      );
+      promises.push(this.generateDistributionWorker(ratio, min, max));
     }
 
-    const resolve = await Promise.all(promises);
-    // const dist: Distribution = {
-    //   elapsedTime: helper.getElapsedTime(startTime),
-    //   points: resolve
-    // };
-    return resolve;
+    return {
+      elapsedTime: Helper.getElapsedTime(startTime),
+      points: (await Promise.all(promises)).flatMap((x) => x)
+    };
   }
 
-  private generateDistributionWorker(): InlineWorker<Point[]> {
-    const worker = new InlineWorker<Point[]>(({numberOfPoints, min, max, helper}) => {
+  private generateDistributionWorker(
+    numberOfPoints: number,
+    min: number,
+    max: number
+  ): Promise<Point[]> {
+    const worker = workerize(({numberOfPoints, min, max}) => {
+      function randomNumberInRange(max: number, min = 0): number {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
       const arr: Point[] = [];
       for (let i = 0; i < numberOfPoints; i++) {
         arr.push({
-          x: helper.randomNumberInRange(max, min),
-          y: helper.randomNumberInRange(max, min)
+          x: randomNumberInRange(max, min),
+          y: randomNumberInRange(max, min)
         });
       }
-      self.postMessage(arr, '');
+      return arr;
     });
-    return worker;
+    return worker({numberOfPoints, min, max});
   }
 }
