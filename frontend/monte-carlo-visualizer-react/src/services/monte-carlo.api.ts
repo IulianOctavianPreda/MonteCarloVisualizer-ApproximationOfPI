@@ -9,18 +9,18 @@ export class MonteCarloApi {
         baseURL: environment.baseUrl
     };
     public static getNaturalDistribution(numberOfPoints: number): Promise<Distribution> {
-        return axios.get(`/natural/${numberOfPoints}`, this.config);
+        return axios.get(`/natural/${numberOfPoints}`, this.config).then((x) => x.data);
     }
 
     public static getWholeDistribution(numberOfPoints: number): Promise<Distribution> {
-        return axios.get(`/whole/${numberOfPoints}`, this.config);
+        return axios.get(`/whole/${numberOfPoints}`, this.config).then((x) => x.data);
     }
 
     public static getMultiThreadedNaturalDistribution(numberOfPoints: number): Promise<Distribution> {
-        return axios.get(`/performance/natural/${numberOfPoints}`, this.config);
+        return axios.get(`/performance/natural/${numberOfPoints}`, this.config).then((x) => x.data);
     }
 
     public static getMultiThreadedWholeDistribution(numberOfPoints: number): Promise<Distribution> {
-        return axios.get(`/performance/whole/${numberOfPoints}`, this.config);
+        return axios.get(`/performance/whole/${numberOfPoints}`, this.config).then((x) => x.data);
     }
 }
