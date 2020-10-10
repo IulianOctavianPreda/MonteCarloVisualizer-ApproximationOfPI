@@ -32,7 +32,7 @@ export class MonteCarloMultiThreadedService {
       promises.push(this.generateDistributionWorker(numberOfPoints - ratio * divider, min, max));
     }
     for (let i = 0; i < ratio; i++) {
-      promises.push(this.generateDistributionWorker(ratio, min, max));
+      promises.push(this.generateDistributionWorker(ratio * divider, min, max));
     }
 
     return {
