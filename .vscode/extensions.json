@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "CoenraadS.bracket-pair-colorizer-2",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "rbbit.typescript-hero",
+        "dbaeumer.vscode-eslint",
+        "steoates.autoimport",
+        "formulahendry.auto-rename-tag",
+        "stringham.move-ts",
+        "ibm.output-colorizer",
+        "christian-kohler.path-intellisense",
+        "visualstudioexptteam.vscodeintellicode"
+    ]
+}
+//@recommended:workspace search in plugins
