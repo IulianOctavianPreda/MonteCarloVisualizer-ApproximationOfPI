@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { Distribution } from '../../models/distribution.model';
-import { ApiAction } from '../../shared/types/api-action';
-import { ApiActionsReducer } from './api-actions.reducer';
+import { ApiAction, ApiActionsReducer } from './api-actions.reducer';
 import { DistributionsReducer } from './distributions.reducer';
 
 export interface ApplicationState {

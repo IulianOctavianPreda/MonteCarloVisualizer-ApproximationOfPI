@@ -1,5 +1,10 @@
+import { Distribution } from '../../models/distribution.model';
 import { MonteCarloApi } from './../../services/monte-carlo.api';
-import { ApiAction } from './../../shared/types/api-action';
+
+export interface ApiAction {
+    name: string;
+    action: (value: number) => Promise<Distribution>;
+}
 
 export const ApiActionsReducer = (): ApiAction[] => {
     return [

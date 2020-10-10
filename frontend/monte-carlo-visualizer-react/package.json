@@ -33,6 +33,7 @@
         "react-redux": "^7.2.1",
         "react-scripts": "3.4.3",
         "redux": "^4.0.5",
+        "singlie": "^2.1.0",
         "typescript": "^3.8.3"
     },
     "browserslist": {
