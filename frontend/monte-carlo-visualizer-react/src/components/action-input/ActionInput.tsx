@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Container, FormControl, InputGroup, Row } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/esm/Dropdown';
@@ -36,23 +37,29 @@ const ActionInput = (props: Props) => {
     const [distribution, setDistribution] = useState<Distribution>();
 
     useEffect(() => {
-        if (distribution?.points && !distribution?.approximatedPi) {
+        if (distribution?.points && !distribution?.pi) {
             const { pi, elapsedTime } = computePi(distribution.points);
 
-            distribution.approximatedPi = pi;
-            distribution.elapsedTimeApproximatingPi = elapsedTime;
+            distribution.pi = pi;
+            distribution.metadata.approximationTime = elapsedTime;
+            distribution.metadata.waitTime = new Decimal(
+                distribution.metadata.approximationTime + distribution.metadata.responseTime
+            ).toNumber();
 
             setDistribution(distribution);
             props.addDistribution(distribution);
         }
     }, [distribution]);
-    useEffect(() => {}, [disableButtons]);
 
     const requestDistribution = async () => {
         setShowInfo(false);
         setDisableButtons(true);
 
-        setDistribution(await selectedAction.action(inputValue ?? 0));
+        const startTime = performance.now();
+        const dist = await selectedAction.action(inputValue ?? 0);
+        dist.metadata.responseTime = performance.now() - startTime;
+
+        setDistribution(dist);
 
         setShowInfo(true);
         setDisableButtons(false);
@@ -95,23 +102,57 @@ const ActionInput = (props: Props) => {
             </Row>
             <Row className={`justify-content-center align-items-center ${showInfo ? 'visible' : 'invisible'}`}>
                 <Col className="px-0 my-1">
-                    <Alert variant="info" className="d-flex justify-content-between">
-                        <span>{`Response time: ${
-                            distribution?.elapsedTime ? (distribution?.elapsedTime / 1000).toFixed(7) : <LoopingText />
-                        }`}</span>
-                        <span>{`Number of points: ${
-                            distribution?.points.length ? distribution?.points.length : <LoopingText />
-                        }`}</span>
-                        <span>{`Approximation time: ${
-                            distribution?.elapsedTimeApproximatingPi ? (
-                                (distribution.elapsedTimeApproximatingPi / 1000).toFixed(7)
-                            ) : (
-                                <LoopingText />
-                            )
-                        }`}</span>
-                        <span>{`PI: ${
-                            distribution?.approximatedPi ? distribution?.approximatedPi.toString() : <LoopingText />
-                        }`}</span>
+                    <Alert variant="info">
+                        <Row className="pb-4">
+                            <Col sm={12} md={12} className="d-flex justify-content-center">
+                                {`PI: ${distribution?.pi ? distribution.pi.toString() : <LoopingText />}`}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={12} lg={2}>{`Total wait time: ${
+                                distribution?.metadata.waitTime ? (
+                                    (distribution?.metadata.waitTime / 1000).toFixed(7) + ' ms'
+                                ) : (
+                                    <LoopingText />
+                                )
+                            }`}</Col>
+
+                            <Col sm={12} lg={2}>{`Response time: ${
+                                distribution?.metadata.responseTime ? (
+                                    (distribution?.metadata.responseTime / 1000).toFixed(7) + ' ms'
+                                ) : (
+                                    <LoopingText />
+                                )
+                            }`}</Col>
+
+                            <Col sm={12} lg={2}>{`Generation time: ${
+                                distribution?.metadata.generateTime ? (
+                                    (distribution?.metadata.generateTime / 1000).toFixed(7) + ' ms'
+                                ) : (
+                                    <LoopingText />
+                                )
+                            }`}</Col>
+
+                            <Col sm={12} lg={2}>{`Approximation time: ${
+                                distribution?.metadata.approximationTime ? (
+                                    (distribution?.metadata.approximationTime / 1000).toFixed(7) + ' ms'
+                                ) : (
+                                    <LoopingText />
+                                )
+                            }`}</Col>
+
+                            <Col sm={12} lg={2}>{`Response size: ${
+                                distribution?.metadata.responseSize ? (
+                                    distribution.metadata.responseSize + 'kb'
+                                ) : (
+                                    <LoopingText />
+                                )
+                            }`}</Col>
+
+                            <Col sm={12} lg={2}>{`Number of points: ${
+                                distribution?.points ? distribution.points.length : <LoopingText />
+                            }`}</Col>
+                        </Row>
                     </Alert>
                 </Col>
             </Row>
