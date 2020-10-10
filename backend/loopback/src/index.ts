@@ -1,4 +1,4 @@
-import {ApplicationConfig, LoopbackApplication} from './application';
+import { ApplicationConfig, LoopbackApplication } from "./application";
 
 export * from './application';
 

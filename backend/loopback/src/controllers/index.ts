@@ -1,1 +1,1 @@
-export * from './ping.controller';
+export * from './monte-carlo.controller';
