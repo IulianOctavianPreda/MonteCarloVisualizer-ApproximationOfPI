@@ -6,8 +6,10 @@ import ActionInput from '../action-input/ActionInput';
 
 const App = () => {
     return (
-        <div className="h-100 w-100 container-fluid justify-content-center align-items-center">
-            <ActionInput />
+        <div className="h-100 container-fluid d-flex justify-content-center align-items-center">
+            <div className="col-8 ">
+                <ActionInput />
+            </div>
         </div>
     );
 };
