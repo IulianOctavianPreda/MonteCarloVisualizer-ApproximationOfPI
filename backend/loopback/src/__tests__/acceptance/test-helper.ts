@@ -1,9 +1,6 @@
-import {LoopbackApplication} from '../..';
-import {
-  createRestAppClient,
-  givenHttpServerConfig,
-  Client,
-} from '@loopback/testlab';
+import { Client, createRestAppClient, givenHttpServerConfig } from "@loopback/testlab";
+
+import { LoopbackApplication } from "../..";
 
 export async function setupApplication(): Promise<AppWithClient> {
   const restConfig = givenHttpServerConfig({
@@ -15,7 +12,7 @@ export async function setupApplication(): Promise<AppWithClient> {
   });
 
   const app = new LoopbackApplication({
-    rest: restConfig,
+    rest: restConfig
   });
 
   await app.boot();
