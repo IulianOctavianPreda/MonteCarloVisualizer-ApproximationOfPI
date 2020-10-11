@@ -30,14 +30,13 @@ export class GraphProcessor {
             return canvas;
         };
 
-        const paintedCanvas = ({ points, size }: { points: Point[]; size: number }) => {
-            console.log(createCanvasWithPoints(points, size).convertToBlob());
-
-            return createCanvasWithPoints(points, size).convertToBlob();
+        const paintedCanvas = async ({ points, size }: { points: Point[]; size: number }) => {
+            return await createCanvasWithPoints(points, size).convertToBlob();
         };
 
-        onmessage = (ev: any) => {
-            postMessage(paintedCanvas(ev.data), '');
+        onmessage = async (ev: any) => {
+            // workaround since the library definitions are not up to date
+            (postMessage as any)(await paintedCanvas(ev.data));
         };
     });
 }
