@@ -1,4 +1,5 @@
 export enum ActionsEnum {
     AddDistribution = 'AddDistribution',
-    DeleteDistribution = 'DeleteDistribution'
+    DeleteDistribution = 'DeleteDistribution',
+    UpdateDistribution = 'UpdateDistribution'
 }
