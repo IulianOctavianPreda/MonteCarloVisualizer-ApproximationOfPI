@@ -4,10 +4,12 @@ import { Alert, Button, Col, Container, FormControl, InputGroup, Row } from 'rea
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 import DropdownButton from 'react-bootstrap/esm/DropdownButton';
 import { connect, ConnectedProps } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { Distribution } from '../../models/distribution.model';
 import { computePi } from '../../services/helper.service';
 import { addDistribution } from '../../store/actions/add-distribution.action';
+import { updateDistribution } from '../../store/actions/update-distribution.action';
 import { ApiAction } from '../../store/reducers/api-actions.reducer';
 import { ApplicationState } from '../../store/reducers/application-state';
 import LoopingText from '../looping-text/LoopingText';
@@ -18,9 +20,10 @@ const mapStateToProps = (state: ApplicationState) => {
     };
 };
 
-const mapDispatch = () => {
+const mapDispatch = (dispatch: any) => {
     return {
-        addDistribution
+        addDistribution: bindActionCreators(addDistribution, dispatch),
+        updateDistribution: bindActionCreators(updateDistribution, dispatch)
     };
 };
 
@@ -46,6 +49,7 @@ const ActionInput = (props: Props) => {
             ).toNumber();
 
             setDistribution(distribution);
+            console.log('add dist');
             props.addDistribution(distribution);
         }
     }, [props, distribution]);
@@ -54,6 +58,7 @@ const ActionInput = (props: Props) => {
         setShowInfo(false);
 
         const startTime = performance.now();
+        console.log(inputValue);
         const dist = await selectedAction.action(inputValue ?? 0);
         dist.metadata.responseTime = performance.now() - startTime;
 
@@ -159,6 +164,7 @@ const ActionInput = (props: Props) => {
                     </Alert>
                 </Col>
             </Row>
+            {/* <Graph size={200} points={distribution?.points ? distribution.points : []} /> */}
         </Container>
     );
 };
