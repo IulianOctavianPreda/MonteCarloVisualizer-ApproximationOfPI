@@ -32,8 +32,7 @@ type Props = PropsFromRedux & {};
 const ActionInput = (props: Props) => {
     const [selectedAction, setSelectedAction] = useState<ApiAction>(props.apiActions[0] ?? null);
     const [inputValue, setInputValue] = useState<number>();
-    const [showInfo, setShowInfo] = useState<boolean>(false);
-    const [disableButtons, setDisableButtons] = useState<boolean>(false);
+    const [showInfo, setShowInfo] = useState<boolean | null>(null);
     const [distribution, setDistribution] = useState<Distribution>();
 
     useEffect(() => {
@@ -53,7 +52,6 @@ const ActionInput = (props: Props) => {
 
     const requestDistribution = async () => {
         setShowInfo(false);
-        setDisableButtons(true);
 
         const startTime = performance.now();
         const dist = await selectedAction.action(inputValue ?? 0);
@@ -62,7 +60,6 @@ const ActionInput = (props: Props) => {
         setDistribution(dist);
 
         setShowInfo(true);
-        setDisableButtons(false);
     };
 
     return (
@@ -80,9 +77,9 @@ const ActionInput = (props: Props) => {
                         <Button
                             variant="outline-info"
                             onClick={async () => await requestDistribution()}
-                            disabled={disableButtons}
+                            disabled={showInfo === false}
                         >
-                            {disableButtons ? <LoopingText /> : selectedAction.name}
+                            {showInfo === false ? <LoopingText /> : selectedAction.name}
                         </Button>
                     </InputGroup.Append>
 
@@ -100,7 +97,7 @@ const ActionInput = (props: Props) => {
                     </DropdownButton>
                 </InputGroup>
             </Row>
-            <Row className={`justify-content-center align-items-center ${showInfo ? 'visible' : 'invisible'}`}>
+            <Row className={`justify-content-center align-items-center ${!!showInfo ? 'visible' : 'invisible'}`}>
                 <Col className="px-0 my-1">
                     <Alert variant="info">
                         <Row className="pb-4">
@@ -111,7 +108,7 @@ const ActionInput = (props: Props) => {
                         <Row>
                             <Col sm={12} lg={2}>{`Total wait time: ${
                                 distribution?.metadata.waitTime ? (
-                                    (distribution?.metadata.waitTime / 1000).toFixed(7) + ' ms'
+                                    (distribution?.metadata.waitTime / 1000).toFixed(7) + ' s'
                                 ) : (
                                     <LoopingText />
                                 )
@@ -119,7 +116,7 @@ const ActionInput = (props: Props) => {
 
                             <Col sm={12} lg={2}>{`Response time: ${
                                 distribution?.metadata.responseTime ? (
-                                    (distribution?.metadata.responseTime / 1000).toFixed(7) + ' ms'
+                                    (distribution?.metadata.responseTime / 1000).toFixed(7) + ' s'
                                 ) : (
                                     <LoopingText />
                                 )
@@ -127,7 +124,7 @@ const ActionInput = (props: Props) => {
 
                             <Col sm={12} lg={2}>{`Generation time: ${
                                 distribution?.metadata.generateTime ? (
-                                    (distribution?.metadata.generateTime / 1000).toFixed(7) + ' ms'
+                                    (distribution?.metadata.generateTime / 1000).toFixed(7) + ' s'
                                 ) : (
                                     <LoopingText />
                                 )
@@ -135,7 +132,7 @@ const ActionInput = (props: Props) => {
 
                             <Col sm={12} lg={2}>{`Approximation time: ${
                                 distribution?.metadata.approximationTime ? (
-                                    (distribution?.metadata.approximationTime / 1000).toFixed(7) + ' ms'
+                                    (distribution?.metadata.approximationTime / 1000).toFixed(7) + ' s'
                                 ) : (
                                     <LoopingText />
                                 )
@@ -143,7 +140,7 @@ const ActionInput = (props: Props) => {
 
                             <Col sm={12} lg={2}>{`Response size: ${
                                 distribution?.metadata.responseSize ? (
-                                    distribution.metadata.responseSize + 'kb'
+                                    distribution.metadata.responseSize.toFixed(7) + 'kb'
                                 ) : (
                                     <LoopingText />
                                 )
