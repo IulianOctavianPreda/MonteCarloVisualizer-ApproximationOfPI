@@ -44,4 +44,9 @@ const Graph = (props: Props) => {
     );
 };
 
+Graph.defaultProps = {
+    points: [],
+    size: 0
+};
+
 export default Graph;

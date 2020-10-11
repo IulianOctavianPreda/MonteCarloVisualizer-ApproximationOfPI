@@ -6,38 +6,47 @@ import Graph from '../graph/Graph';
 
 type Props = {
     distribution: Distribution;
+    onClose: () => void;
+    show: boolean;
 };
 
 const GraphDialog = (props: Props) => {
-    const [height, setHeight] = useState(0);
-    const ref = useRef(null);
-
-    useEffect(() => {
-        if (!!ref && !!ref.current) {
-            setHeight((ref.current as any).clientHeight);
-        }
-    });
+    const [value, setValue] = useState<number>(0);
 
     return (
-        <Modal.Dialog className="h-100">
-            <Modal.Body ref={ref}>
+        <Modal show={props.show} onHide={() => props.onClose()} backdrop="static" keyboard={false}>
+            <Modal.Header closeButton>
+                <Modal.Title>Visualization</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
                 <Container fluid>
                     <Row>
                         <Col>
-                            <Graph points={props.distribution.points} size={height} />
+                            <Graph
+                                points={props.distribution?.points.slice(
+                                    0,
+                                    (value * props.distribution.points.length) / 100
+                                )}
+                                size={400}
+                            />
                         </Col>
+                    </Row>
+
+                    <Row className="mt-2">
                         <Col>
                             <input
+                                className="w-100"
                                 type="range"
                                 min="0"
-                                max={props.distribution.points.length}
-                                value={props.distribution.points.length}
+                                max="100"
+                                value={value}
+                                onChange={(e) => setValue(parseInt(e.target.value, 10))}
                             />
                         </Col>
                     </Row>
                 </Container>
             </Modal.Body>
-        </Modal.Dialog>
+        </Modal>
     );
 };
 

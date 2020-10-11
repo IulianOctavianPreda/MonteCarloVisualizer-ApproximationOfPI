@@ -12,6 +12,7 @@ import { addDistribution } from '../../store/actions/add-distribution.action';
 import { updateDistribution } from '../../store/actions/update-distribution.action';
 import { ApiAction } from '../../store/reducers/api-actions.reducer';
 import { ApplicationState } from '../../store/reducers/application-state';
+import GraphDialog from '../graph-dialog/GraphDialog';
 import LoopingText from '../looping-text/LoopingText';
 
 const mapStateToProps = (state: ApplicationState) => {
@@ -37,6 +38,8 @@ const ActionInput = (props: Props) => {
     const [inputValue, setInputValue] = useState<number>();
     const [showInfo, setShowInfo] = useState<boolean | null>(null);
     const [distribution, setDistribution] = useState<Distribution>();
+
+    const [showVisualization, setShowVisualization] = useState<boolean>(false);
 
     useEffect(() => {
         if (distribution?.points && !distribution?.pi) {
@@ -162,7 +165,16 @@ const ActionInput = (props: Props) => {
                     </Alert>
                 </Col>
             </Row>
-            {/* <Graph size={200} points={distribution?.points ? distribution.points : []} /> */}
+            <Row className={`justify-content-center align-items-center ${!!showInfo ? 'visible' : 'invisible'}`}>
+                <Button onClick={() => setShowVisualization(true)}>Show Visualization</Button>
+                {showVisualization ? (
+                    <GraphDialog
+                        distribution={distribution as Distribution}
+                        onClose={() => setShowVisualization(false)}
+                        show={showVisualization}
+                    />
+                ) : null}
+            </Row>
         </Container>
     );
 };
