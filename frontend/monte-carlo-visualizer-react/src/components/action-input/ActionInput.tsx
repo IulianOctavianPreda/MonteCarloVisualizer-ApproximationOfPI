@@ -48,7 +48,7 @@ const ActionInput = (props: Props) => {
             setDistribution(distribution);
             props.addDistribution(distribution);
         }
-    }, [distribution]);
+    }, [props, distribution]);
 
     const requestDistribution = async () => {
         setShowInfo(false);
@@ -70,7 +70,13 @@ const ActionInput = (props: Props) => {
                         placeholder="Number of Points"
                         aria-label="Number of Points"
                         aria-describedby="basic-addon2"
-                        onChange={(e) => setInputValue(parseInt(e.target.value, 10))}
+                        onChange={(e) => {
+                            const value = parseInt(e.target.value, 10);
+                            setInputValue(isNaN(value) ? 0 : value);
+                        }}
+                        onKeyDown={async (e: React.KeyboardEvent<HTMLInputElement>) =>
+                            e.key === 'Enter' ? await requestDistribution() : null
+                        }
                     />
 
                     <InputGroup.Append>
