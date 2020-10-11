@@ -2,6 +2,9 @@
 
 This repository presents the Monte Carlo method of approximating PI
 
+# Pre-requirements
+- make sure ports 3000 and 3001 are free. If any error occurs try to close skype, teamviewer or other programs that might block the port. 
+
 # Requirements
 - NodeJs >= 14
 - Npm
