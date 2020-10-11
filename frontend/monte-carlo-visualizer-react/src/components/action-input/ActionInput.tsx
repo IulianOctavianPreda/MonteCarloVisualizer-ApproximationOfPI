@@ -80,9 +80,10 @@ const ActionInput = (props: Props) => {
                             const value = parseInt(e.target.value, 10);
                             setInputValue(isNaN(value) ? 0 : value);
                         }}
-                        onKeyDown={async (e: React.KeyboardEvent<HTMLInputElement>) =>
-                            e.key === 'Enter' ? await requestDistribution() : null
-                        }
+                        onKeyDown={async (e: React.KeyboardEvent<HTMLInputElement>) => {
+                            setShowInfo(null);
+                            return e.key === 'Enter' ? await requestDistribution() : null;
+                        }}
                     />
 
                     <InputGroup.Append>
@@ -102,7 +103,14 @@ const ActionInput = (props: Props) => {
                         id="input-group-dropdown-2"
                     >
                         {props.apiActions.map((x) => (
-                            <Dropdown.Item key={x.name} className="dropdown-item" onClick={() => setSelectedAction(x)}>
+                            <Dropdown.Item
+                                key={x.name}
+                                className="dropdown-item"
+                                onClick={() => {
+                                    setSelectedAction(x);
+                                    setShowInfo(null);
+                                }}
+                            >
                                 {x.name}
                             </Dropdown.Item>
                         ))}
