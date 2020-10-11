@@ -3,7 +3,6 @@ import { InlineWorker } from './inline.worker';
 
 export class GraphProcessor {
     public worker = new InlineWorker(() => {
-        console.log('in');
         const createCanvasWithPoints = (points: Point[], size: number) => {
             const nrOfPoints = points.length;
             const ratio = points.length / size;
@@ -30,13 +29,14 @@ export class GraphProcessor {
             return canvas;
         };
 
-        const paintedCanvas = async ({ points, size }: { points: Point[]; size: number }) => {
+        const paintedCanvas = async ({ id, points, size }: { id: number; points: Point[]; size: number }) => {
             return await createCanvasWithPoints(points, size).convertToBlob();
         };
 
         onmessage = async (ev: any) => {
+            const blob = await paintedCanvas(ev.data);
             // workaround since the library definitions are not up to date
-            (postMessage as any)(await paintedCanvas(ev.data));
+            (postMessage as any)({ id: ev.data.id, blob });
         };
     });
 }

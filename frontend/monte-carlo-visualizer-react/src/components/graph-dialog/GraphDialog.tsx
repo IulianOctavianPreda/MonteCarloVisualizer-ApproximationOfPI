@@ -1,39 +1,39 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Col, Container, Modal, Row } from 'react-bootstrap';
-import { connect, ConnectedProps } from 'react-redux';
 
 import { Distribution } from '../../models/distribution.model';
-import { addDistribution } from '../../store/actions/add-distribution.action';
-import { deleteDistribution } from '../../store/actions/delete-distribution.action';
-import { ApplicationState } from '../../store/reducers/application-state';
+import Graph from '../graph/Graph';
 
-const mapStateToProps = (state: ApplicationState) => {
-    return {};
-};
-
-const mapDispatch = () => {
-    return {
-        addDistribution,
-        deleteDistribution
-    };
-};
-
-const connector = connect(mapStateToProps, mapDispatch);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type Props = PropsFromRedux & {
+type Props = {
     distribution: Distribution;
 };
 
-const Graph = (props: Props) => {
+const GraphDialog = (props: Props) => {
+    const [height, setHeight] = useState(0);
     const ref = useRef(null);
 
+    useEffect(() => {
+        if (!!ref && !!ref.current) {
+            setHeight((ref.current as any).clientHeight);
+        }
+    });
+
     return (
-        <Modal.Dialog>
-            <Modal.Body>
+        <Modal.Dialog className="h-100">
+            <Modal.Body ref={ref}>
                 <Container fluid>
                     <Row>
-                        <Col>{/* <Graph distribution={props.distribution} /> */}</Col>
-                        <Col></Col>
+                        <Col>
+                            <Graph points={props.distribution.points} size={height} />
+                        </Col>
+                        <Col>
+                            <input
+                                type="range"
+                                min="0"
+                                max={props.distribution.points.length}
+                                value={props.distribution.points.length}
+                            />
+                        </Col>
                     </Row>
                 </Container>
             </Modal.Body>
@@ -41,4 +41,4 @@ const Graph = (props: Props) => {
     );
 };
 
-export default connector(Graph);
+export default GraphDialog;

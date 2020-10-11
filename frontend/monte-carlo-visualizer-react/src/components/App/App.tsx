@@ -4,7 +4,6 @@ import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import ActionInput from '../action-input/ActionInput';
-import Gallery from '../gallery/Gallery';
 
 const App = () => {
     return (
@@ -14,11 +13,12 @@ const App = () => {
                     <ActionInput />
                 </Col>
             </Row>
-            <Row className="w-100 justify-content-center align-items-center">
+
+            {/* <Row className="w-100 justify-content-center align-items-center">
                 <Col xs={12} md={8}>
                     <Gallery />
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     );
 };

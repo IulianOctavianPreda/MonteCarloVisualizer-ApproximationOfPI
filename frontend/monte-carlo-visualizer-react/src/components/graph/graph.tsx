@@ -1,7 +1,5 @@
-/* eslint-disable import/no-webpack-loader-syntax */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Circle, Layer, Stage } from 'react-konva';
-import GraphWorker from 'worker-loader!../../../src/shared/web-workers/graph-creator.worker';
 
 import { Point } from '../../models/point.model';
 
@@ -11,16 +9,8 @@ type Props = {
 };
 
 const Graph = (props: Props) => {
-    const [inCircleColor, setInCircleColor] = useState<string>('dodgerblue');
-    const [color, setColor] = useState<string>('firebrick');
-
-    useEffect(() => {
-        const web = new GraphWorker();
-        web.onmessage = (ev) => {
-            console.log(ev);
-        };
-        web.postMessage({ points: props.points, size: props.size });
-    }, [props]);
+    const [inCircleColor] = useState<string>('dodgerblue');
+    const [color] = useState<string>('firebrick');
 
     const createPoints = () => {
         const nrOfPoints = props.points.length;

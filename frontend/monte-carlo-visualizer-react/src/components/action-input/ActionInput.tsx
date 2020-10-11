@@ -49,7 +49,6 @@ const ActionInput = (props: Props) => {
             ).toNumber();
 
             setDistribution(distribution);
-            console.log('add dist');
             props.addDistribution(distribution);
         }
     }, [props, distribution]);
@@ -58,7 +57,6 @@ const ActionInput = (props: Props) => {
         setShowInfo(false);
 
         const startTime = performance.now();
-        console.log(inputValue);
         const dist = await selectedAction.action(inputValue ?? 0);
         dist.metadata.responseTime = performance.now() - startTime;
 

@@ -9,7 +9,6 @@ export default class GraphWorker extends Worker {
 
     constructor(stringUrl: string | URL = '') {
         super(stringUrl);
-        console.log(stringUrl, 'aaa');
     }
     public createPoints = (points: Point[], size: number) => {
         const nrOfPoints = points.length;

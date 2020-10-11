@@ -3,8 +3,6 @@ import { Action } from '../actions/action';
 import { ActionsEnum } from './../actions/actions-enum';
 
 export const DistributionsReducer = (state: Distribution[] = [], action: Action<Distribution>): Distribution[] => {
-    console.log('add red', state);
-
     if (action.type === ActionsEnum.AddDistribution) {
         const dist = action.payload;
         dist.id = state.length;
